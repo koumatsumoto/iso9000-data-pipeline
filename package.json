@@ -11,7 +11,7 @@
     "build": "tsc",
     "format": "prettier -w .",
     "test": "vitest run --coverage",
-    "start": "node src/main.mts"
+    "start": "node --experimental-strip-types src/main.mts"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
