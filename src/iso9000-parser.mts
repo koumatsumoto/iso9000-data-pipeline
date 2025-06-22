@@ -298,7 +298,7 @@ export class Iso9000Parser {
         } else if (currentState === "example" && currentContent.trim()) {
           examples.push(currentContent.trim());
         }
-        remark = line;
+        remark = this.cleanRemarkContent(line);
         currentContent = "";
         this.currentIndex++;
         continue;
@@ -310,9 +310,9 @@ export class Iso9000Parser {
         if (currentState === "definition" && currentContent.trim()) {
           definition = currentContent.trim();
         } else if (currentState === "note" && currentContent.trim()) {
-          notes.push(currentContent.trim());
+          notes.push(this.cleanNoteContent(currentContent.trim()));
         } else if (currentState === "example" && currentContent.trim()) {
-          examples.push(currentContent.trim());
+          examples.push(this.cleanExampleContent(currentContent.trim()));
         }
         currentState = "note";
         currentContent = line;
@@ -321,9 +321,9 @@ export class Iso9000Parser {
         if (currentState === "definition" && currentContent.trim()) {
           definition = currentContent.trim();
         } else if (currentState === "note" && currentContent.trim()) {
-          notes.push(currentContent.trim());
+          notes.push(this.cleanNoteContent(currentContent.trim()));
         } else if (currentState === "example" && currentContent.trim()) {
-          examples.push(currentContent.trim());
+          examples.push(this.cleanExampleContent(currentContent.trim()));
         }
         currentState = "example";
         currentContent = line;
@@ -343,9 +343,9 @@ export class Iso9000Parser {
     if (currentState === "definition" && currentContent.trim()) {
       definition = currentContent.trim();
     } else if (currentState === "note" && currentContent.trim()) {
-      notes.push(currentContent.trim());
+      notes.push(this.cleanNoteContent(currentContent.trim()));
     } else if (currentState === "example" && currentContent.trim()) {
-      examples.push(currentContent.trim());
+      examples.push(this.cleanExampleContent(currentContent.trim()));
     }
 
     const result: { definition: string; notes: string[]; examples: string[]; remark?: string } = {
@@ -364,6 +364,21 @@ export class Iso9000Parser {
   private isRemarkLine(line: string): boolean {
     // Check if line is fully enclosed in parentheses or brackets
     return (line.startsWith("（") && line.endsWith("）")) || (line.startsWith("［") && line.endsWith("］"));
+  }
+
+  private cleanNoteContent(content: string): string {
+    // Remove "注記 ", "注記1 ", "注記2 ", etc. from the beginning
+    return content.replace(/^注記\d*\s+/, "");
+  }
+
+  private cleanExampleContent(content: string): string {
+    // Remove "例 " from the beginning
+    return content.replace(/^例\s+/, "");
+  }
+
+  private cleanRemarkContent(content: string): string {
+    // Remove "（" from the beginning and "）" from the end
+    return content.replace(/^（/, "").replace(/）$/, "");
   }
 
   public async saveToJsonFile(document: Iso9000Document, outputPath: string): Promise<void> {
