@@ -8,18 +8,27 @@ This is an ISO 9000 data pipeline project (iso9000-data-pipeline) that collects,
 
 ## Project Status
 
-This repository is in early development stage with minimal implementation. Currently contains:
-- README.md with project description in Japanese
-- .gitignore configured for Node.js projects
-- No source code, dependencies, or build configuration yet
+This repository has been set up as a TypeScript project with the following components:
+- Node.js v24+ with ESM modules (type: "module")
+- TypeScript with strictest settings
+- Vitest for testing with coverage
+- Prettier for formatting (150 character line width)
+- Main entry point: src/main.mts
 
 ## Development Setup
 
-Since the project structure is not yet established, you will need to:
-1. Determine the technology stack based on requirements
-2. Initialize package.json and dependencies
-3. Set up build/test/lint tooling
-4. Create source code structure
+The project is now initialized with:
+1. TypeScript v5.7.3 with strictest compiler options
+2. Package.json with ESM configuration and Node.js v24+ requirement
+3. Vitest testing framework with coverage
+4. Prettier code formatting
+
+## Available npm Scripts
+
+- `npm run build` - Compile TypeScript to JavaScript
+- `npm run format` - Format code with Prettier (150 character line width)
+- `npm run test` - Run tests with Vitest and generate coverage report
+- `npm start` - Execute the main application (src/main.mts)
 
 ## Architecture Notes
 

@@ -1,0 +1,26 @@
+{
+  "name": "iso9000-data-pipeline",
+  "version": "1.0.0",
+  "description": "ISO 9000 data pipeline that collects, transforms, and processes ISO 9000 standard information from multiple sources",
+  "main": "src/main.mts",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier -w .",
+    "test": "vitest run --coverage",
+    "start": "node src/main.mts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@vitest/coverage-v8": "^2.1.8",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  },
+  "prettier": {
+    "printWidth": 150
+  }
+}
