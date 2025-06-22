@@ -24,7 +24,7 @@ export interface Iso9000Document {
     totalTerms: number;
     totalCategories: number;
   };
-  categories: Record<string, CategoryData>;
+  categories: CategoryData[];
 }
 
 export class Iso9000Parser {
@@ -41,7 +41,7 @@ export class Iso9000Parser {
     this.lines = this.extractParagraphs(htmlContent);
     this.currentIndex = 0;
 
-    const categories: Record<string, CategoryData> = {};
+    const categories: CategoryData[] = [];
     let totalTerms = 0;
 
     // Find title from HTML
@@ -54,11 +54,11 @@ export class Iso9000Parser {
 
       const terms = this.parseTermsInCategory();
       if (terms.length > 0) {
-        categories[categoryInfo.title] = {
+        categories.push({
           id: categoryInfo.id,
           name: categoryInfo.title,
           terms,
-        };
+        });
         totalTerms += terms.length;
       }
     }
@@ -68,7 +68,7 @@ export class Iso9000Parser {
         title,
         extractedAt: new Date().toISOString(),
         totalTerms,
-        totalCategories: Object.keys(categories).length,
+        totalCategories: categories.length,
       },
       categories,
     };
@@ -207,7 +207,7 @@ export class Iso9000Parser {
 
       // Add to term name content
       if (termNameContent) {
-        termNameContent += " " + line;
+        termNameContent += line;
       } else {
         termNameContent = line;
       }
@@ -315,7 +315,7 @@ export class Iso9000Parser {
       } else {
         // Continue current content
         if (currentContent) {
-          currentContent += " " + line;
+          currentContent += line;
         } else {
           currentContent = line;
         }
