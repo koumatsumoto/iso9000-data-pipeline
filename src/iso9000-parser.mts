@@ -188,17 +188,78 @@ export class Iso9000Parser {
     const termNameLine = this.lines[this.currentIndex]?.trim() || "";
     this.currentIndex++;
 
-    // Extract English term from first "（" to next "）"
-    const englishMatch = termNameLine.match(/^([^（]+)（([^）]+)）/);
+    // Handle complex cases with multiple terms and parentheses
+    // Pattern: "term1（english1），term2（english2），term3（english3）..."
+    const hasMultipleTermsWithParentheses = /（[^）]+），[^（]+（[^）]+）/.test(termNameLine);
 
-    if (englishMatch && englishMatch[1] && englishMatch[2]) {
+    if (hasMultipleTermsWithParentheses) {
+      const { japaneseTerms, englishTerms } = this.parseMultipleTermsWithParentheses(termNameLine);
       return {
-        term: englishMatch[1].trim(),
-        englishTerm: englishMatch[2].trim(),
+        term: japaneseTerms.join("，"),
+        englishTerm: englishTerms.join(", "),
       };
     }
 
-    return { term: termNameLine };
+    // Standard pattern: "japanese（english）"
+    const englishMatch = termNameLine.match(/^([^（]+)（([^）]+)）/);
+    if (englishMatch && englishMatch[1] && englishMatch[2]) {
+      const japanesePart = englishMatch[1].trim();
+      const englishPart = englishMatch[2].trim();
+
+      // Handle comma-separated terms within parentheses
+      const processedJapanese = this.processCommaSeparatedTerms(japanesePart);
+      const processedEnglish = this.processCommaSeparatedTerms(englishPart);
+
+      return {
+        term: processedJapanese,
+        englishTerm: processedEnglish,
+      };
+    }
+
+    // Handle comma-separated terms even without English part
+    const processedTerm = this.processCommaSeparatedTerms(termNameLine);
+    return { term: processedTerm };
+  }
+
+  private parseMultipleTermsWithParentheses(input: string): { japaneseTerms: string[]; englishTerms: string[] } {
+    const japaneseTerms: string[] = [];
+    const englishTerms: string[] = [];
+
+    // Split by full-width comma and process each part
+    const parts = input.split("，");
+
+    for (const part of parts) {
+      const trimmedPart = part.trim();
+
+      // Check if this part has parentheses
+      const match = trimmedPart.match(/^([^（]+)（([^）]+)）/);
+      if (match && match[1] && match[2]) {
+        japaneseTerms.push(match[1].trim());
+        // Clean up English term by removing extra whitespace and newlines
+        const englishTerm = match[2].trim().replace(/\s+/g, " ");
+        englishTerms.push(englishTerm);
+      } else {
+        // If no parentheses, treat as Japanese term only
+        japaneseTerms.push(trimmedPart);
+      }
+    }
+
+    return { japaneseTerms, englishTerms };
+  }
+
+  private processCommaSeparatedTerms(input: string): string {
+    // Check if the input contains comma separators
+    if (input.includes("，")) {
+      // Split by full-width comma and clean up each part
+      const parts = input.split("，").map((part) => part.trim());
+      return parts.join("，");
+    } else if (input.includes(",")) {
+      // Split by regular comma and clean up each part
+      const parts = input.split(",").map((part) => part.trim());
+      return parts.join(", ");
+    }
+
+    return input;
   }
 
   private parseTermContent(): {

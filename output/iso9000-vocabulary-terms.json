@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "JISQ9000:2015 品質マネジメントシステム－用語及び定義",
-    "extractedAt": "2025-06-22T08:41:21.969Z",
+    "extractedAt": "2025-06-22T09:04:25.740Z",
     "totalTerms": 138,
     "totalCategories": 13
   },
@@ -46,9 +46,9 @@
         },
         {
           "id": "3.1.5",
-          "term": "コンフィギュレーション機関",
-          "definition": "control board），コンフィギュレーション決定委員会（dispositioning authority）コンフィギュレーション（3.10.6）に関して，意思決定を行う責任及び権限を割り当てられた個人又はグループ。",
-          "englishTerm": "configuration authority",
+          "term": "コンフィギュレーション機関，コンフィギュレーション統制委員会，コンフィギュレーション決定委員会",
+          "definition": "コンフィギュレーション（3.10.6）に関して，意思決定を行う責任及び権限を割り当てられた個人又はグループ。",
+          "englishTerm": "configuration authority, configuration control board, dispositioning authority",
           "notes": ["注記 組織（3.2.1）内外の密接に関連する利害関係者（3.2.3）は，コンフィギュレーション機関に代表を派遣することが望ましい。"],
           "remark": "（ISO 10007:2003の3.8を変更。）"
         },
@@ -90,9 +90,9 @@
         },
         {
           "id": "3.2.3",
-          "term": "利害関係者",
+          "term": "利害関係者，ステークホルダー",
           "definition": "ある決定事項若しくは活動に影響を与え得るか，その影響を受け得るか，又はその影響を受けると認識している，個人又は組織（3.2.1）。",
-          "englishTerm": "interested party",
+          "englishTerm": "interested party, stakeholder",
           "notes": [
             "注記 この用語及び定義は，ISO/IEC専門業務用指針−第1部：統合版ISO補足指針の附属書SLに示されたISOマネジメントシステム規格の共通用語及び中核となる定義の一つを成す。元の定義にない例を追加した。"
           ],
@@ -110,24 +110,24 @@
         },
         {
           "id": "3.2.5",
-          "term": "提供者",
+          "term": "提供者，供給者",
           "definition": "製品（3.7.6）又はサービス（3.7.7）を提供する組織（3.2.1）。",
-          "englishTerm": "provider",
+          "englishTerm": "provider, supplier",
           "notes": ["注記1 提供者は，組織の内部又は外部のいずれでもあり得る。", "注記2 契約関係においては，提供者は“契約者”と呼ばれる。"],
           "examples": ["例 製品又はサービスの生産者，流通者，小売業者又は販売者"]
         },
         {
           "id": "3.2.6",
-          "term": "外部提供者",
+          "term": "外部提供者，外部供給者",
           "definition": "組織（3.2.1）の一部ではない提供者（3.2.5）。",
-          "englishTerm": "external provider",
+          "englishTerm": "external provider, external supplier",
           "examples": ["例 製品（3.7.6）又はサービス（3.7.7）の生産者，流通者，小売業者又は販売者"]
         },
         {
           "id": "3.2.7",
-          "term": "DRP提供者",
+          "term": "DRP提供者，紛争解決手続提供者",
           "definition": "組織の外部における紛争（3.9.6）解決のプロセス（3.4.1）を提供し，運用する個人又は組織（3.2.1）。",
-          "englishTerm": "DRP-provider",
+          "englishTerm": "DRP-provider, dispute resolution process provider",
           "notes": [
             "注記1 一般に，DRP提供者は，組織又は個人，及び苦情申出者とは異なる法的主体である。このことによって，独立性及び公正性という性質が強化される。状況によっては，未解決の苦情（3.9.3）に対応するため，組織内に別の部署が設けられる場合がある。",
             "注記2 DRP提供者は，紛争解決手続を提供するために両当事者と契約（3.4.7）を結び，そのパフォーマンス（3.7.8）に対する責任を負う。DRP提供者は，紛争解決者（3.1.6）を選定する。DRP提供者はまた，支援要員，経営幹部及びその他の管理層を活用し，財源，事務的サポート，スケジュール調整の援助，教育・訓練，会議室，監督及びこれに類する職務を提供する。",
@@ -448,9 +448,9 @@
       "terms": [
         {
           "id": "3.6.1",
-          "term": "対象",
+          "term": "対象，実体，項目",
           "definition": "認識できるもの又は考えられるもの全て。",
-          "englishTerm": "object",
+          "englishTerm": "object, entity, item",
           "notes": [
             "注記 対象は，物質的なもの（例 エンジン，一枚の紙，ダイヤモンド），非物質的なもの（例 変換率，プロジェクト計画），又は想像上のもの（例 組織の将来の状態）の場合がある。"
           ],
