@@ -7,7 +7,7 @@ export async function main(): Promise<void> {
 
   try {
     // Input and output file paths
-    const inputFile = path.join(process.cwd(), "data", "Q9000-2015-01.html");
+    const inputFile = path.join(process.cwd(), "input", "Q9000-2015-01-raw.html");
     const outputFile = path.join(process.cwd(), "output", "iso9000-terms.json");
 
     console.log(`Parsing HTML file: ${inputFile}`);
