@@ -8,11 +8,13 @@
 ## セットアップ手順
 
 1. 依存関係のインストール
+
    ```bash
    npm install
    ```
 
 2. TypeScriptのビルド
+
    ```bash
    npm run build
    ```

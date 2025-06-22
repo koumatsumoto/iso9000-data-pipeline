@@ -9,6 +9,7 @@ This is an ISO 9000 data pipeline project (iso9000-data-pipeline) that collects,
 ## Project Status
 
 This repository has been set up as a TypeScript project with the following components:
+
 - Node.js v24+ with ESM modules (type: "module")
 - TypeScript with strictest settings
 - Vitest for testing with coverage
@@ -18,6 +19,7 @@ This repository has been set up as a TypeScript project with the following compo
 ## Development Setup
 
 The project is now initialized with:
+
 1. TypeScript v5.7.3 with strictest compiler options
 2. Package.json with ESM configuration and Node.js v24+ requirement
 3. Vitest testing framework with coverage
@@ -33,13 +35,15 @@ The project is now initialized with:
 ## Architecture Notes
 
 The project aims to be a data pipeline with these components:
+
 - Data collection from multiple sources
 - Data cleansing and transformation
-- Data integration and structuring  
+- Data integration and structuring
 - Output formatting for iso9000-viewer consumption
 - Data quality validation
 
 When implementing, consider:
+
 - Modular pipeline architecture for different data sources
 - Configurable data transformation rules
 - Robust error handling and logging
