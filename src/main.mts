@@ -5,8 +5,8 @@ export async function main(): Promise<void> {
 
   try {
     // Input and output file paths
-    const inputFile = "./input/Q9000-2025-01-vocabulary-flat.html";
-    const outputFile = "./output/iso9000-vocabulary-terms.json";
+    const inputFile = "./input/Q9000-2025-01-vocabulary.html";
+    const outputFile = "./output/iso9000-terms.json";
 
     console.log(`Parsing HTML file: ${inputFile}`);
 
