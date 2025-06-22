@@ -141,10 +141,11 @@ export class Iso9000Parser {
       // Check for term ID (3.x.y pattern)
       const termMatch = termIdPattern.exec(line);
       if (termMatch) {
-        const term = this.parseSingleTerm();
+        const term = this.parseSingleTermWithId(line);
         if (term) {
           terms.push(term);
         }
+        // parseSingleTermWithId handles currentIndex increment
       } else {
         this.currentIndex++;
       }
@@ -153,15 +154,12 @@ export class Iso9000Parser {
     return terms;
   }
 
-  private parseSingleTerm(): TermDefinition | null {
-    if (this.currentIndex >= this.lines.length) return null;
-
-    const termId = this.lines[this.currentIndex]?.trim();
-    if (!termId) return null;
+  private parseSingleTermWithId(termId: string): TermDefinition | null {
+    // Move to next line (term name)
     this.currentIndex++;
 
-    // Parse term name (could span multiple lines)
-    const { term, englishTerm } = this.parseTermNameMultiLine();
+    // Parse term name (always exactly one line after term ID)
+    const { term, englishTerm } = this.parseTermName();
 
     // Parse definition and additional content
     const { definition, notes, examples, remark } = this.parseTermContent();
@@ -182,57 +180,16 @@ export class Iso9000Parser {
     return termDef;
   }
 
-  private parseTermNameMultiLine(): { term: string; englishTerm?: string } {
-    let termNameContent = "";
-
-    // Collect term name lines until we hit a definition or next term
-    while (this.currentIndex < this.lines.length) {
-      const line = this.lines[this.currentIndex]?.trim();
-      if (!line) {
-        this.currentIndex++;
-        continue;
-      }
-
-      // Check if this looks like a definition (contains Japanese text with periods)
-      // or is a new term/category ID
-      if (/^3\.(\d+)\.(\d+)$/.test(line) || /^3\.(\d+)$/.test(line)) {
-        // This is a new term/category, stop
-        break;
-      }
-
-      // Check if this line contains definitive definition markers
-      if (this.isDefinitionLine(line)) {
-        break;
-      }
-
-      // Add to term name content
-      if (termNameContent) {
-        termNameContent += line;
-      } else {
-        termNameContent = line;
-      }
-
-      this.currentIndex++;
+  private parseTermName(): { term: string; englishTerm?: string } {
+    if (this.currentIndex >= this.lines.length) {
+      return { term: "" };
     }
 
-    return this.parseTermName(termNameContent);
-  }
+    const termNameLine = this.lines[this.currentIndex]?.trim() || "";
+    this.currentIndex++;
 
-  private isDefinitionLine(line: string): boolean {
-    // Heuristic to detect if a line is part of definition rather than term name
-    // Definition lines typically contain specific Japanese grammatical patterns
-    const definitionPatterns = [
-      /を|に|が|の|で|は|と|より|から|まで|について|に関して|において|によって/, // Japanese particles
-      /である|です|だ|する|される|できる|もつ|ある|いる|なる|つ|。/, // Japanese verbs/endings
-      /組織\(|システム\(|プロセス\(|活動\(|状況\(|情報\(/, // References to other terms
-    ];
-
-    return definitionPatterns.some((pattern) => pattern.test(line));
-  }
-
-  private parseTermName(termNameLine: string): { term: string; englishTerm?: string } {
-    // Check for English term in parentheses
-    const englishMatch = termNameLine.match(/^([^（(]+)\s*[（(]([^）)]+)[）)]/);
+    // Extract English term from first "（" to next "）"
+    const englishMatch = termNameLine.match(/^([^（]+)（([^）]+)）/);
 
     if (englishMatch && englishMatch[1] && englishMatch[2]) {
       return {
@@ -273,15 +230,14 @@ export class Iso9000Parser {
       // Check for remark (must be fully enclosed in parentheses or brackets)
       if (this.isRemarkLine(line)) {
         // Save previous content
-        if (currentState === "definition" && currentContent) {
+        if (currentState === "definition" && currentContent.trim()) {
           definition = currentContent.trim();
-        } else if (currentState === "note" && currentContent) {
+        } else if (currentState === "note" && currentContent.trim()) {
           notes.push(currentContent.trim());
-        } else if (currentState === "example" && currentContent) {
+        } else if (currentState === "example" && currentContent.trim()) {
           examples.push(currentContent.trim());
         }
-
-        remark = line; // Remark is always a single line
+        remark = line;
         currentContent = "";
         this.currentIndex++;
         continue;
@@ -289,31 +245,29 @@ export class Iso9000Parser {
 
       // Check for special content types
       if (line.startsWith("注記")) {
-        // Save previous content
-        if (currentState === "definition" && currentContent) {
+        // Save previous content and start new note
+        if (currentState === "definition" && currentContent.trim()) {
           definition = currentContent.trim();
-        } else if (currentState === "note" && currentContent) {
+        } else if (currentState === "note" && currentContent.trim()) {
           notes.push(currentContent.trim());
-        } else if (currentState === "example" && currentContent) {
+        } else if (currentState === "example" && currentContent.trim()) {
           examples.push(currentContent.trim());
         }
-
         currentState = "note";
         currentContent = line;
       } else if (line.startsWith("例")) {
-        // Save previous content
-        if (currentState === "definition" && currentContent) {
+        // Save previous content and start new example
+        if (currentState === "definition" && currentContent.trim()) {
           definition = currentContent.trim();
-        } else if (currentState === "note" && currentContent) {
+        } else if (currentState === "note" && currentContent.trim()) {
           notes.push(currentContent.trim());
-        } else if (currentState === "example" && currentContent) {
+        } else if (currentState === "example" && currentContent.trim()) {
           examples.push(currentContent.trim());
         }
-
         currentState = "example";
         currentContent = line;
       } else {
-        // Continue current content
+        // Continue current content - concatenate with space if needed
         if (currentContent) {
           currentContent += line;
         } else {
@@ -325,11 +279,11 @@ export class Iso9000Parser {
     }
 
     // Save final content
-    if (currentState === "definition" && currentContent) {
+    if (currentState === "definition" && currentContent.trim()) {
       definition = currentContent.trim();
-    } else if (currentState === "note" && currentContent) {
+    } else if (currentState === "note" && currentContent.trim()) {
       notes.push(currentContent.trim());
-    } else if (currentState === "example" && currentContent) {
+    } else if (currentState === "example" && currentContent.trim()) {
       examples.push(currentContent.trim());
     }
 
