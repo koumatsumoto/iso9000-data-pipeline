@@ -48,3 +48,13 @@ When implementing, consider:
 - Configurable data transformation rules
 - Robust error handling and logging
 - Data validation at each pipeline stage
+
+## Development Completion Protocol
+
+**IMPORTANT**: When development tasks are completed, ALWAYS run these commands in sequence:
+
+1. `npm run format` - Format all code with Prettier
+2. `npm run build` - Compile TypeScript and verify no build errors
+3. `npm run test` - Run all tests and ensure they pass
+
+This ensures code quality and consistency before considering any development task complete.
