@@ -58,3 +58,11 @@ When implementing, consider:
 3. `npm run test` - Run all tests and ensure they pass
 
 This ensures code quality and consistency before considering any development task complete.
+
+## Commit Message Guidelines
+
+Generate commit messages following Conventional Commits format. Use prefixes like feat:, fix:, docs:, style:, refactor:, test:, chore:. Keep the subject line under 50 characters and use imperative mood. Format: type(scope): description. Add detailed explanations from the 3rd line onward in bullet point list format.
+
+## Claude Workflow Notes
+
+- When "commit" is instructed, carefully review all changes and perform a git commit with an appropriate conventional commit message.
