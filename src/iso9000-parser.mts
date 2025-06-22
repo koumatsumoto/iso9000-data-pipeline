@@ -294,9 +294,9 @@ export class Iso9000Parser {
         if (currentState === "definition" && currentContent.trim()) {
           definition = currentContent.trim();
         } else if (currentState === "note" && currentContent.trim()) {
-          notes.push(currentContent.trim());
+          notes.push(this.cleanNoteContent(currentContent.trim()));
         } else if (currentState === "example" && currentContent.trim()) {
-          examples.push(currentContent.trim());
+          examples.push(this.cleanExampleContent(currentContent.trim()));
         }
         remark = this.cleanRemarkContent(line);
         currentContent = "";
